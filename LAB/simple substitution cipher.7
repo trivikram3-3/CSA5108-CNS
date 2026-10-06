@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char cipher[] =
+    "53‡‡†305))6*;4826)4‡.)4‡);806*;48†8¶60))85;;]8*;:‡*8†83"
+    "(88)5*†;46(;88*96*?;8)*‡(;485);5*†2:*‡(;4956*2(5*—4)8¶8*"
+    ";4069285);)6†8)4‡‡;1(‡9;48081;8:8‡1;48†85;4)485†528806*81 "
+    "(‡9;48;(88;4(‡?34;48)4‡;161;:188;‡?;";
+
+    /*
+       Substitution mapping obtained from frequency analysis.
+
+       8  -> e
+       ;  -> t
+       4  -> h
+       6  -> a
+       *  -> o
+       0  -> i
+       )  -> n
+       ‡  -> d
+       †  -> s
+       3  -> g
+       5  -> l
+       2  -> f
+       (  -> r
+       9  -> u
+       1  -> m
+       :  -> c
+       7  -> b
+       ]  -> p
+       ¶  -> v
+       .  -> y
+       ?  -> k
+       —  -> w
+    */
+
+    char cipher_symbols[] =
+        "8;46*)‡†3052(9:1]¶.?—7";
+
+    char plain_letters[] =
+        "ethonidsgilfrucmpvkykwb";
+
+    int i, j;
+
+    printf("Ciphertext:\n%s\n\n", cipher);
+
+    printf("Decrypted Message:\n");
+
+    for (i = 0; cipher[i] != '\0'; i++) {
+        int found = 0;
+
+        for (j = 0; cipher_symbols[j] != '\0'; j++) {
+            if (cipher[i] == cipher_symbols[j]) {
+                printf("%c", plain_letters[j]);
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            printf("%c", cipher[i]);
+        }
+    }
+
+    printf("\n");
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Decrypted Message:
+
+a good glass in the bishop's hostel in the devil's seat
+forty-one degrees and thirteen minutes northeast and by
+north main branch seventh limb east side shoot from the
+left eye of the death's-head a bee line from the tree
+through the shot fifty feet out.
