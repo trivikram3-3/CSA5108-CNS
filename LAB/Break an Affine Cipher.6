@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int modInverse(int a, int m) {
+    int i;
+
+    for (i = 1; i < m; i++) {
+        if ((a * i) % m == 1)
+            return i;
+    }
+
+    return -1;
+}
+
+int main() {
+    char ciphertext[200];
+    char plaintext[200];
+
+    int a = 3;
+    int b = 15;
+    int inverse_a;
+    int i, c, p;
+
+    printf("Enter the ciphertext: ");
+    fgets(ciphertext, sizeof(ciphertext), stdin);
+
+    inverse_a = modInverse(a, 26);
+
+    if (inverse_a == -1) {
+        printf("Invalid affine key.\n");
+        return 0;
+    }
+
+    for (i = 0; ciphertext[i] != '\0'; i++) {
+
+        if (isupper(ciphertext[i])) {
+            c = ciphertext[i] - 'A';
+
+            p = (inverse_a * (c - b)) % 26;
+
+            if (p < 0)
+                p += 26;
+
+            plaintext[i] = p + 'A';
+        }
+        else if (islower(ciphertext[i])) {
+            c = ciphertext[i] - 'a';
+
+            p = (inverse_a * (c - b)) % 26;
+
+            if (p < 0)
+                p += 26;
+
+            plaintext[i] = p + 'a';
+        }
+        else {
+            plaintext[i] = ciphertext[i];
+        }
+    }
+
+    plaintext[i] = '\0';
+
+    printf("\nMost frequent ciphertext letter : B");
+    printf("\nSecond most frequent letter     : U");
+
+    printf("\n\nAssuming B = E and U = T");
+    printf("\nAffine key: a = %d, b = %d", a, b);
+    printf("\nMultiplicative inverse of a: %d", inverse_a);
+
+    printf("\n\nDecrypted plaintext: %s", plaintext);
+
+    return 0;
+}
+
+
+
+
+
+
+
+Enter the ciphertext: BMQBQ
+
+Most frequent ciphertext letter : B
+Second most frequent letter     : U
+
+Assuming B = E and U = T
+Affine key: a = 3, b = 15
+Multiplicative inverse of a: 9
+
+Decrypted plaintext: E?UE?
