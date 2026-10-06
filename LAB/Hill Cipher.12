@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int mod26(int n) {
+    return (n % 26 + 26) % 26;
+}
+
+int main() {
+    char plaintext[200];
+    char text[200];
+    char ciphertext[200];
+    char decrypted[200];
+
+    int key[2][2] = {
+        {9, 4},
+        {5, 7}
+    };
+
+    int inverseKey[2][2];
+
+    int i, j = 0;
+    int a, b;
+    int c1, c2;
+    int p1, p2;
+
+    printf("Enter plaintext:\n");
+    fgets(plaintext, sizeof(plaintext), stdin);
+
+    /* Remove spaces and keep only letters */
+    for (i = 0; plaintext[i] != '\0'; i++) {
+        if (isalpha(plaintext[i])) {
+            text[j++] = tolower(plaintext[i]);
+        }
+    }
+
+    text[j] = '\0';
+
+    /* If odd number of letters, add X */
+    if (strlen(text) % 2 != 0) {
+        text[j++] = 'x';
+        text[j] = '\0';
+    }
+
+    /* ---------------- ENCRYPTION ---------------- */
+
+    j = 0;
+
+    for (i = 0; text[i] != '\0'; i += 2) {
+
+        a = text[i] - 'a';
+        b = text[i + 1] - 'a';
+
+        c1 = mod26(key[0][0] * a + key[0][1] * b);
+        c2 = mod26(key[1][0] * a + key[1][1] * b);
+
+        ciphertext[j++] = c1 + 'a';
+        ciphertext[j++] = c2 + 'a';
+    }
+
+    ciphertext[j] = '\0';
+
+    /* ---------------- DECRYPTION ---------------- */
+
+    /*
+       Determinant = (9*7) - (4*5)
+                   = 63 - 20
+                   = 43
+                   = 17 mod 26
+
+       Inverse of 17 modulo 26 = 23
+
+       K^-1 = 23 * [ 7  -4
+                    -5   9 ] mod 26
+
+            = [ 5  12
+               15  25 ]
+    */
+
+    inverseKey[0][0] = 5;
+    inverseKey[0][1] = 12;
+    inverseKey[1][0] = 15;
+    inverseKey[1][1] = 25;
+
+    j = 0;
+
+    for (i = 0; ciphertext[i] != '\0'; i += 2) {
+
+        a = ciphertext[i] - 'a';
+        b = ciphertext[i + 1] - 'a';
+
+        p1 = mod26(inverseKey[0][0] * a +
+                   inverseKey[0][1] * b);
+
+        p2 = mod26(inverseKey[1][0] * a +
+                   inverseKey[1][1] * b);
+
+        decrypted[j++] = p1 + 'a';
+        decrypted[j++] = p2 + 'a';
+    }
+
+    decrypted[j] = '\0';
+
+    printf("\nPlaintext  : %s\n", text);
+    printf("Ciphertext : %s\n", ciphertext);
+    printf("Decrypted  : %s\n", decrypted);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Plaintext  : meetmeattheusualplaceattenratherthaneightoclockx
+Ciphertext : ukixukydromeiwszxwiokunukhxhroajroanqyebtlkjegad
+Decrypted  : meetmeattheusualplaceattenratherthaneightoclockx
