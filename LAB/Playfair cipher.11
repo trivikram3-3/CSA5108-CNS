@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    double totalKeys;
+    double uniqueKeys;
+    double logTotal;
+    double logUnique;
+
+    /*
+       Part (a):
+       Number of possible 5x5 matrices using 25 letters = 25!
+    */
+    totalKeys = tgamma(26);
+
+    logTotal = log2(totalKeys);
+
+    /*
+       Part (b):
+       Equivalent keys:
+       - Rows can be permuted: 5!
+       - Columns can be permuted: 5!
+       - Rows and columns can be interchanged
+       
+       Therefore, divide by:
+       5! * 5! * 2
+    */
+    uniqueKeys = totalKeys / (120.0 * 120.0 * 2.0);
+
+    logUnique = log2(uniqueKeys);
+
+    printf("PLAYFAIR CIPHER KEY SPACE\n");
+    printf("-------------------------\n");
+
+    printf("\n(a) Total possible keys:\n");
+    printf("25! = %.0e\n", totalKeys);
+    printf("Approximately 2^%.2f\n", logTotal);
+
+    printf("\n(b) Effectively unique keys:\n");
+    printf("25! / (5! x 5! x 2)\n");
+    printf("Approximately %.0e\n", uniqueKeys);
+    printf("Approximately 2^%.2f\n", logUnique);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PLAYFAIR CIPHER KEY SPACE
+-------------------------
+
+(a) Total possible keys:
+25! = 2e+25
+Approximately 2^83.68
+
+(b) Effectively unique keys:
+25! / (5! x 5! x 2)
+Approximately 7e+20
+Approximately 2^69.19
