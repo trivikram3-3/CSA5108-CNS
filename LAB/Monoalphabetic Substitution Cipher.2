@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char text[100];
+    char key[26];
+    int i;
+
+    printf("Enter the substitution key (26 letters): ");
+    scanf("%26s", key);
+
+    // Check that the key contains 26 unique letters
+    for (i = 0; i < 26; i++) {
+        key[i] = toupper(key[i]);
+    }
+
+    printf("Enter the plaintext: ");
+    getchar();
+    fgets(text, sizeof(text), stdin);
+
+    // Encryption
+    for (i = 0; text[i] != '\0'; i++) {
+        if (text[i] >= 'A' && text[i] <= 'Z') {
+            text[i] = key[text[i] - 'A'];
+        }
+        else if (text[i] >= 'a' && text[i] <= 'z') {
+            text[i] = tolower(key[text[i] - 'a']);
+        }
+    }
+
+    printf("Ciphertext: %s", text);
+
+    return 0;
+}
+
+
+
+
+
+Enter the substitution key (26 letters): ZYXWVUTSRQPONMLKJIHGFEDCBA
+Enter the plaintext: HELLO WORLD
+Ciphertext: SVOOL DLI OW
